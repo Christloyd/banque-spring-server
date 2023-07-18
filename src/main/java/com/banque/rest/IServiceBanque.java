@@ -1,4 +1,4 @@
-package com.banque.web.controller;
+package com.banque.rest;
 
 import com.banque.entity.CompteEntity;
 import com.banque.entity.OperationEntity;

@@ -1,4 +1,4 @@
-package com.banque.web.controller;
+package com.banque.rest;
 
 import com.banque.entity.CompteEntity;
 import com.banque.entity.ICompteEntity;
@@ -14,6 +14,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -53,6 +54,15 @@ public class ServiceBanqueController {
         List<ICompteEntity> comptes = serviceCompte.selectAll(unUtilisateurId);
         return comptes.toArray(new CompteEntity[0]);
     }
+    
+    @PostMapping("/selectCompteEtLibelle")
+    public CompteEntity[] selectCompteEtLibelle(@RequestParam("unUtilisateurId") Integer unUtilisateurId, @RequestParam("unLibelle") String unLibelle) throws Exception {
+        // Logique de sélection des comptes
+        // ...
+        List<ICompteEntity> comptes = serviceCompte.selectSearchCompte(unUtilisateurId, unLibelle);
+        return comptes.toArray(new CompteEntity[0]);
+    }
+    
 
     @PostMapping("/selectOperation")
     public OperationEntity[] selectOperation(

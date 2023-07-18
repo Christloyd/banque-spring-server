@@ -114,6 +114,29 @@ public interface IDAO<T extends IEntity> {
 	public abstract List<T> selectAll(String pAWhere, String pAnOrderBy,
 			Connection connexion) throws ExceptionDao;
 
+	
+	/**
+	 * Selectionne tous les elements qui correspondent aux criteres avec pAWhere et pBWhere.
+	 *
+	 * @param pAWhere
+	 *            une clause where (sans 'where')
+	 * 
+	 * @param pBWhere
+	 *            une deuxieme clause where (sans 'where')
+	 *            
+	 * @param pAnOrderBy
+	 *            une clause orderby (sans 'orderby')
+	 * @param connexion
+	 *            une connection, peut etre null
+	 *
+	 * @return la liste des elements trouves ou une liste vide si aucun
+	 * @throws ExceptionDao
+	 *             si une erreur survient
+	 */
+	public abstract List<T> selectListLibelle(String pAWhere, String pBWhere, String pAnOrderBy,
+			Connection connexion) throws ExceptionDao;
+	
+	
 	/**
 	 * Recupere une connexion sur la base.
 	 *

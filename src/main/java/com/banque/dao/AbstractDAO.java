@@ -265,6 +265,79 @@ IDAO<T> {
 
 		return result;
 	}
+	
+	@Override
+	public List<T> selectListLibelle(String pAWhere, String pBWhere, String pAnOrderBy,
+			Connection connexion) throws ExceptionDao {
+		List<T> result = new ArrayList<>();
+
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		boolean connexionCreated = connexion == null;
+		try {
+			if (connexionCreated) {
+				connexion = this.getConnexion();
+				connexion.setReadOnly(true);
+			}
+
+			StringBuffer request = new StringBuffer();
+			request.append("select ").append(this.getAllColumnNames())
+			.append(" from ");
+			request.append(this.getTableName());
+			if (pAWhere != null) {
+				request.append(" where ");
+				request.append(pAWhere);
+			}
+			if (pBWhere != null) {
+				request.append(" and ");
+				request.append(pBWhere);
+			}
+			if (pAnOrderBy != null) {
+				request.append(" order by ");
+				request.append(pAnOrderBy);
+			}
+			request.append(';');
+			if (this.LOG.isDebugEnabled()) {
+				this.LOG.debug("Requete: " + request.toString());
+			}
+			ps = connexion.prepareStatement(request.toString());
+
+			rs = ps.executeQuery();
+			while (rs.next()) {
+				T ce = this.fromResultSet(rs);
+				result.add(ce);
+			}
+
+		} catch (Exception e) {
+			throw new ExceptionDao(e);
+		} finally {
+			if (rs != null) {
+				try {
+					rs.close();
+				} catch (SQLException e) {
+					this.LOG.error("Impossible de fermer le resultset!", e);
+				}
+			}
+			if (ps != null) {
+				try {
+					ps.close();
+				} catch (SQLException e) {
+					this.LOG.error("Impossible de fermer le prepareStatement!",
+							e);
+				}
+			}
+			if (connexionCreated && (connexion != null)) {
+				try {
+					connexion.close();
+				} catch (SQLException e) {
+					this.LOG.error("Impossible de fermer la connexion!", e);
+				}
+
+			}
+		}
+
+		return result;
+	}
 
 	@Override
 	public Connection getConnexion() throws ExceptionDao {

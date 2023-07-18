@@ -53,5 +53,9 @@ public interface ICompteService {
 	public abstract List<ICompteEntity> selectAll(Integer unUtilisateurId)
 			throws EntityIntrouvableException, AucunDroitException,
 			NullPointerException, ErreurTechniqueException;
+	
+	public abstract List<ICompteEntity> selectSearchCompte(Integer unUtilisateurId, String unLibelle)
+			throws EntityIntrouvableException, AucunDroitException,
+			NullPointerException, ErreurTechniqueException;
 
 }

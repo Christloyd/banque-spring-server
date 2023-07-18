@@ -91,6 +91,28 @@ public class CompteService extends AbstractService implements ICompteService {
 		try {
 			resultat = this.getCompteDao().selectAll(
 					"utilisateurId=" + unUtilisateurId, "libelle ASC", null);
+			System.out.println(" voici le resultat : "+resultat);
+		} catch (ExceptionDao e) {
+			throw new ErreurTechniqueException(e);
+		}
+
+		return resultat;
+	}
+	
+	@Override
+	public List<ICompteEntity> selectSearchCompte(Integer unUtilisateurId, String unLibelle)
+			throws EntityIntrouvableException, AucunDroitException,
+			NullPointerException, ErreurTechniqueException {
+		if (unUtilisateurId == null) {
+			throw new NullPointerException("utilisateurId");
+		}
+		if (unLibelle == null) {
+			throw new NullPointerException("utilisateurId");
+		}
+		List<ICompteEntity> resultat = new ArrayList<>();
+		try {
+			resultat = this.getCompteDao().selectListLibelle(
+					"utilisateurId=" + unUtilisateurId, "libelle LIKE '%" + unLibelle + "%'", "libelle ASC", null);
 		} catch (ExceptionDao e) {
 			throw new ErreurTechniqueException(e);
 		}
