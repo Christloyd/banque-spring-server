@@ -13,6 +13,7 @@ import java.util.Date;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -63,18 +64,23 @@ public class ServiceBanqueController {
         return comptes.toArray(new CompteEntity[0]);
     }
     
-
+    
     @PostMapping("/selectOperation")
     public OperationEntity[] selectOperation(
         @RequestParam("unUtilisateurId") Integer unUtilisateurId,
         @RequestParam("unCompteId") Integer unCompteId,
-        @RequestParam("dateDeb") Date dateDeb,
-        @RequestParam("dateFin") Date dateFin,
-        @RequestParam("creditDebit") Boolean creditDebit
+        @RequestParam("dateDeb") @DateTimeFormat(pattern = "dd/MM/yyyy") Date dateDeb,
+        @RequestParam("dateFin") @DateTimeFormat(pattern = "dd/MM/yyyy") Date dateFin,
+        @RequestParam(value = "creditDebit", required = false) Boolean creditDebit
     ) throws Exception {
-        // Logique de sélection des opérations
-        // ...
-        List<IOperationEntity> operations = serviceOperation.selectCritere(unUtilisateurId, unCompteId, dateDeb, dateFin, creditDebit, !creditDebit);
+        
+      
+        List<IOperationEntity> operations;
+        if (creditDebit == null) // si on envoie pas le creditDebit alors ca recupere tous, credit et debit
+            operations = serviceOperation.selectCritere(unUtilisateurId, unCompteId, dateDeb, dateFin, true, true);
+        else
+            operations = serviceOperation.selectCritere(unUtilisateurId, unCompteId, dateDeb, dateFin, creditDebit, !creditDebit);
+
         return operations.toArray(new OperationEntity[0]);
     }
 }
