@@ -8,6 +8,7 @@ import com.banque.service.IAuthentificationService;
 import com.banque.service.ICompteService;
 import com.banque.service.IOperationService;
 import com.banque.web.http.Login;
+import com.banque.web.http.Virement;
 
 import java.util.Date;
 import java.util.List;
@@ -41,10 +42,7 @@ public class ServiceBanqueController {
 
     @PostMapping("/authentifier")
     public Integer authentifier(@RequestBody Login login) throws Exception {
-        // NE JAMAIS FAIRE CELA DANS LA REALITE
-        // NE JAMAIS LOGUER/AFFICHER LE MOT DE PASSE
-        // Logique d'authentification
-        // ...
+
         return serviceAuthentification.authentifier(login.getUnLogin() , login.getUnMdp()).getId();
     }
 
@@ -73,7 +71,7 @@ public class ServiceBanqueController {
         @RequestParam("dateFin") @DateTimeFormat(pattern = "dd/MM/yyyy") Date dateFin,
         @RequestParam(value = "creditDebit", required = false) Boolean creditDebit
     ) throws Exception {
-        
+      
       
         List<IOperationEntity> operations;
         if (creditDebit == null) // si on envoie pas le creditDebit alors ca recupere tous, credit et debit
@@ -83,4 +81,16 @@ public class ServiceBanqueController {
 
         return operations.toArray(new OperationEntity[0]);
     }
+    
+    @PostMapping("/virement")
+    public OperationEntity[] doVirement(@RequestBody Virement virement ) throws Exception {
+    	
+    	List<IOperationEntity> operations;
+    	
+    	operations = serviceOperation.faireVirement(virement.getUnUtilisateurId(), virement.getUnCompteIdSrc(), virement.getUnCompteIdDst(), virement.getUnMontant());
+
+    	return operations.toArray(new OperationEntity[0]);
+    	
+    }
+    
 }
