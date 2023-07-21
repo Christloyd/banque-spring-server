@@ -82,6 +82,22 @@ public class ServiceBanqueController {
         return operations.toArray(new OperationEntity[0]);
     }
     
+    
+    @PostMapping("/selectAllOperation")
+    public OperationEntity[] selectOperation(
+        @RequestParam("unUtilisateurId") Integer unUtilisateurId,
+        @RequestParam("unCompteId") Integer unCompteId
+    ) throws Exception {
+      
+      
+        List<IOperationEntity> operations;
+
+            operations = serviceOperation.selectAll(unUtilisateurId, unCompteId);
+
+        return operations.toArray(new OperationEntity[0]);
+    }
+    
+    
     @PostMapping("/virement")
     public OperationEntity[] doVirement(@RequestBody Virement virement ) throws Exception {
     	
