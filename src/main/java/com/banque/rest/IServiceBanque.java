@@ -13,10 +13,10 @@ public interface IServiceBanque {
     public Integer authentifier(String unLogin, String unMdp) throws Exception;
 
     public CompteEntity[] selectCompte(Integer unUtilisateurId) throws Exception;
-
-    public OperationEntity[] selectOperation(Integer unUtilisateurId, Integer unCompteId, Date dateDeb, Date dateFin, Boolean creditDebit) throws Exception;
     
     public OperationEntity[] selectAllOperation(Integer unUtilisateurId, Integer unCompteId) throws Exception;
+
+    public OperationEntity[] selectOperation(Integer unUtilisateurId, Integer unCompteId, Date dateDeb, Date dateFin, Boolean creditDebit) throws Exception;
     
     public CompteEntity[] doVirement(@RequestBody Virement virement ) throws Exception;
     

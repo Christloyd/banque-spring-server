@@ -16,7 +16,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -63,6 +62,21 @@ public class ServiceBanqueController {
     }
     
     
+    @PostMapping("/selectAllOperation")
+    public OperationEntity[] selectOperation(
+        @RequestParam("unUtilisateurId") Integer unUtilisateurId,
+        @RequestParam("unCompteId") Integer unCompteId
+    ) throws Exception {
+      
+      
+        List<IOperationEntity> operations;
+
+            operations = serviceOperation.selectAll(unUtilisateurId, unCompteId);
+
+        return operations.toArray(new OperationEntity[0]);
+    }
+    
+    
     @PostMapping("/selectOperation")
     public OperationEntity[] selectOperation(
         @RequestParam("unUtilisateurId") Integer unUtilisateurId,
@@ -83,19 +97,6 @@ public class ServiceBanqueController {
     }
     
     
-    @PostMapping("/selectAllOperation")
-    public OperationEntity[] selectOperation(
-        @RequestParam("unUtilisateurId") Integer unUtilisateurId,
-        @RequestParam("unCompteId") Integer unCompteId
-    ) throws Exception {
-      
-      
-        List<IOperationEntity> operations;
-
-            operations = serviceOperation.selectAll(unUtilisateurId, unCompteId);
-
-        return operations.toArray(new OperationEntity[0]);
-    }
     
     
     @PostMapping("/virement")
